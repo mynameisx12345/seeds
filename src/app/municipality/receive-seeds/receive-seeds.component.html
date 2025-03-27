@@ -1,0 +1,70 @@
+<div class="distribute-seeds">
+    <div class="flex flex-col" [formGroup]="distributeForm"> 
+        <div class="flex flex-row justify-between items-center">
+            <mat-form-field>
+                <mat-label>ID</mat-label>
+                <input matInput formControlName="id" readonly>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Municipality</mat-label>
+                <input matInput formControlName="municipalityName" readonly>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Status</mat-label>
+                <input matInput formControlName="statusName" readonly>
+            </mat-form-field>
+        </div>
+        <table mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="seedName">
+                <th mat-header-cell *matHeaderCellDef> Seed </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.controls['seedName'].value}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="qtyDelivered">
+                <th mat-header-cell *matHeaderCellDef> Qty. Delivered </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.controls['qtyDelivered'].value}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="uom">
+                <th mat-header-cell *matHeaderCellDef> Unit of Measure </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.controls['uom'].value}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="qtyToReceive">
+                <th mat-header-cell *matHeaderCellDef> Qty. to Receive </th>
+                <td mat-cell *matCellDef="let element">
+                   <mat-form-field>
+                        <input matInput type="number" [formControl]="getFormControl(element,'qtyToReceive')">
+                   </mat-form-field>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="remarks">
+                <th mat-header-cell *matHeaderCellDef> Remarks </th>
+                <td mat-cell *matCellDef="let element">
+                   <mat-form-field>
+                        <input matInput [formControl]="getFormControl(element,'remarks')">
+                   </mat-form-field>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <div class="flex flex-row items-center justify-center mt-5">
+            <button mat-raised-button color="warn" (click)="saveStart()" [disabled]="distributeForm.invalid || seedsDistributed.length === 0 ">RECEIVE</button>
+        </div>
+    </div>
+</div>
+
+<ng-template #confirm>
+    <app-modal 
+        [title]="'Confirm Receive'" 
+        [content]="'Receiving will increase the remaining quantity'"
+        (onYes)="confirmSaving('R')"
+        (onNo)="cancelSaving()"
+        >
+    </app-modal>
+
+</ng-template>

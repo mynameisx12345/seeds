@@ -1,0 +1,10 @@
+.app {
+    min-height: 100vh;
+    min-width: 100vw;
+    background: #FBE4D6;
+    background: linear-gradient(180deg, #F5EFE7 0%, #D8C4B6 100%);
+    .content {
+        min-height: calc(100vh - 220px);
+    }
+    
+  }

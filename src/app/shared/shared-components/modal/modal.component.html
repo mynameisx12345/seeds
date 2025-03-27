@@ -1,0 +1,12 @@
+<div class="w-full flex flex-col p-5 modal">
+    <div class="title mb-2">
+        {{title}}
+    </div>
+    <div>
+        {{content}}
+    </div>
+    <div class="w-full flex flex-row justify-end gap-x-5 mt-2">
+        <button mat-raised-button color="accent" (click)="yes()">Yes</button>
+        <button mat-raised-button color="warn" (click)="no()">No</button>
+    </div>
+</div>

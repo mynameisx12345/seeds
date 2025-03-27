@@ -1,0 +1,15 @@
+<div>
+    <div class="flex" [ngClass]="isDesktop ? 'flex-col gap-y-1' : 'flex-row'">
+        <button mat-flat-button   *ngFor="let link of links" (click)="link.subLinks.length > 0 ? menuTrigger.openMenu(): goToLink(link.link)">
+            {{link.label}}
+            <div #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu"></div>
+            <mat-menu #menu="matMenu" xPosition="before">
+                <button mat-menu-item *ngFor="let subLink of link.subLinks" (click)="goToLink(subLink.link)">
+                  <span>{{subLink.label}}</span>
+                </button>
+            </mat-menu>
+        </button>
+    </div>
+
+  
+</div>

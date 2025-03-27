@@ -1,0 +1,74 @@
+<div class="distribute-seeds">
+    <div class="flex flex-col gap-y-5" [formGroup]="distributeForm">
+        <div class="flex flex-row justify-end items-center">
+            <button mat-raised-button  color="primary" (click)="addRow()">Add Seed</button>
+        </div>
+        <table mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="seedId">
+                <th mat-header-cell *matHeaderCellDef> Seed </th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-select (selectionChange)="seedChange(element, $event)"  [formControl]="getFormControl(element,'seedId')">
+                        <mat-option *ngFor="let seed of seedsSelection$ | async" [value]="seed.id">{{seed.name}}</mat-option>
+                    </mat-select>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="qtyRemaining">
+                <th mat-header-cell *matHeaderCellDef> Qty. Remaining </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.controls['qtyRemaining'].value}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="uom">
+                <th mat-header-cell *matHeaderCellDef> Unit of Measure </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.controls['uom'].value}}
+                </td>
+              </ng-container>
+         
+              <ng-container matColumnDef="qtyToDistribute">
+                <th mat-header-cell *matHeaderCellDef>Qty. To Distribute </th>
+                <td mat-cell *matCellDef="let element"> 
+                    <mat-form-field>
+                        <input matInput type="number" [formControl]="getFormControl(element,'qtyToDistribute')"
+                            [max]="element.controls['qtyRemaining'].value">
+                    </mat-form-field>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="farmerId">
+                <th mat-header-cell *matHeaderCellDef>Farmer </th>
+                <td mat-cell *matCellDef="let element"> 
+                  <mat-select [formControl]="getFormControl(element,'farmerId')">
+                    <mat-option *ngFor="let farmer of farmers$ | async" [value]="farmer.id">{{farmer.name}}</mat-option>
+                  </mat-select>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="remarks">
+                <th mat-header-cell *matHeaderCellDef>Remarks </th>
+                <td mat-cell *matCellDef="let element"> 
+                    <mat-form-field>
+                        <input matInput  [formControl]="getFormControl(element,'remarks')"
+                        [readonly]='distributeForm.value.status === "S"'>
+                    </mat-form-field>
+
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="menu">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element; let i=index"> 
+                   <button mat-button color="warn" (click)="removeRow(i)"
+                   [disabled]='distributeForm.value.status === "S"'><mat-icon>delete</mat-icon></button>
+                </td>
+              </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <div class="flex flex-row items-center justify-center w-full mt-5 gap-x-5">
+            <button mat-raised-button color="accent" [disabled]="distributeForm.invalid || seedsDistributed.length === 0 || distributeForm.value.status === 'S' ||  (quantityChecker$  | async)"
+              
+            >SAVE</button>
+            <button mat-raised-button color="warn" [disabled]="distributeForm.invalid || seedsDistributed.length === 0 || distributeId=== null || distributeForm.value.status === 'S'"
+
+            >SUBMIT</button>
+        </div>
+    </div>
+</div>
