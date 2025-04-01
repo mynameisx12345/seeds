@@ -1,18 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProvinceService } from '../../province/province.service';
-import { map, startWith, take, tap, withLatestFrom } from 'rxjs';
+import { filter, map, startWith, switchMap, take, tap, withLatestFrom } from 'rxjs';
 import { UserService } from '../../user/user.service';
-import { SeedI } from '../../shared/models/shared-models';
+import { MDistributeDtlI, MDistributeHdrI, SeedI } from '../../shared/models/shared-models';
 import { MunicipalityService } from '../municipality.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-distribute-seeds',
   templateUrl: './distribute-seeds.component.html',
   styleUrl: './distribute-seeds.component.scss'
 })
-export class DistributeSeedsComponent implements OnInit{
+export class DistributeSeedsComponent implements OnInit, AfterViewInit{
   distributeForm = this.fb.group({
     municipalityId: ['',Validators.required],
     status:['N', Validators.required],
@@ -73,12 +76,20 @@ export class DistributeSeedsComponent implements OnInit{
 
     })
   )
+
+  currentDialog: MatDialogRef<any> | null = null;
+  @ViewChild('confirm') confirmSave:any;
+
   
   constructor(
     private readonly fb: FormBuilder,
     private readonly provinceService: ProvinceService,
     private readonly userService: UserService,
     private readonly municipalityService: MunicipalityService,
+    private readonly snackbar: MatSnackBar,
+    private readonly router: Router,
+    private readonly dialog: MatDialog,
+    private readonly route: ActivatedRoute
   ){}
 
   ngOnInit(): void {
@@ -91,6 +102,43 @@ export class DistributeSeedsComponent implements OnInit{
     this.quantityChecker$.pipe(
       tap((res)=>console.log('res',res))
     )
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(()=>{
+      this.route.queryParams.pipe(
+        take(1),
+        tap((param)=>{
+          if(param['id']){
+            this.distributeId = param['id'];
+          }
+        }),
+        filter((param)=>!!param['id']),
+        switchMap(()=>this.municipalityService.getDistribution(this.distributeId)),
+        tap((distributionRes:any)=>{
+          const [distribution] = distributionRes;
+
+          this.distributeForm.patchValue({
+            municipalityId: distribution.municipalityId,
+            status: distribution.status,
+            seeds: distribution.details.map((dist:any)=>{
+              return {
+                seed: dist.seedId,
+                qtyRemaining:parseFloat(dist.qtyRemaining) ,
+                qtyToDistribute: dist.qtyDistributed,
+                uom: dist.uom,
+                remarks: dist.remarks,
+                farmerId: dist.farmerId
+              }
+            })
+          });
+
+          distribution.details.forEach((element:any) => {
+            this.addRow(element.seedId, element.qtyRemaining,element.qtyDistributed, element.uom, element.remarks, element.farmerId)
+          });
+        })
+      ).subscribe();
+    })
   }
 
   get seedsDistributed(){
@@ -137,7 +185,54 @@ export class DistributeSeedsComponent implements OnInit{
     this.dataSource = new MatTableDataSource(this.seedsDistributed.controls)
   }
 
-  hasOverQuantity(){
-    
+  confirmSaving(status: string){
+    const {municipalityId, seeds} = this.distributeForm.value;
+    const parsedDet = seeds?.map((seed:any)=>{
+      return {
+        seedId: seed.seedId,
+        qtyRemaining: seed.qtyRemaining,
+        uom: seed.uom,
+        qtyDistributed: seed.qtyToDistribute,
+        remarks: seed.remarks,
+        farmerId: seed.farmerId
+      }
+    })
+
+    const parsed:MDistributeHdrI = {
+      id: this.distributeId,
+      municipalityId: municipalityId as string,
+      status: status,
+      details: parsedDet as MDistributeDtlI[]
+    }
+
+    this.municipalityService.distribute(parsed).pipe(
+      take(1),
+      tap((res:any)=>{
+        this.currentDialog?.close(true);
+
+        this.distributeId = res.id;
+        const message = status === 'N' ? 'Saved Successfully' : 'Submitted Successfully'
+        this.snackbar.open(message,'',{
+          verticalPosition:'top',
+          duration:3000
+        })
+      }),
+      filter(res=>res.status === 'S'),
+      switchMap(()=>this.provinceService.getSeeds()),
+      tap(()=>{
+        this.router.navigate(['/municipality/menu/distribute-seeds-list'])
+      })
+    ).subscribe()
+  }
+
+  cancelSaving(){
+    this.currentDialog?.close(false);
+  }
+
+  saveStart(){
+    this.currentDialog = this.dialog.open(this.confirmSave, {
+      disableClose: true,
+      width: '30%'
+    })
   }
 }

@@ -41,7 +41,7 @@ export class ProvinceService {
         return {
           id: res.id,
           name:res.name,
-          totalRemaning: Number(res.total_remaining),
+          totalRemaining: Number(res.total_remaining),
           uom: res.uom,
           qtyTransit: Number(res.qty_transit),
           qtyRemaining: res.qty_remaining.map((rem:any)=>{
@@ -86,5 +86,9 @@ export class ProvinceService {
         }))
       })
     )
+  }
+
+  addSeed(param:any){
+    return this.http.post(`${this.apiUrl}/province/seeds`,param)
   }
 }

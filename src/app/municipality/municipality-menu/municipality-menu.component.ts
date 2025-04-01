@@ -28,7 +28,7 @@ export class MunicipalityMenuComponent {
         },
         {
           label: 'Distribute Seeds',
-          link:'/municipality/menu/distribute-seeds'
+          link:'/municipality/menu/distribute-seeds-list'
         }
       ]
     },

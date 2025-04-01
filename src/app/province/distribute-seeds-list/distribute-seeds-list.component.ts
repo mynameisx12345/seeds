@@ -23,7 +23,6 @@ export class DistributeSeedsListComponent implements OnInit{
     filter(load=>load),
     switchMap(()=>this.provinceService.getDistributions()),
     tap((distributions:any)=>{
-      console.log(distributions);
       this.dataSource.data = distributions.filter((dist:any)=>dist.status !== 'R');
       this.dataSource.paginator = this.paginator as MatPaginator;
       this.dataSource.sort = this.sort as MatSort;

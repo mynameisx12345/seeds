@@ -62,3 +62,27 @@ export interface FarmerI{
     municipalityId: any,
 }
 
+export interface MDistributeHdrI{
+    id: number | string | null,
+    municipalityId: number| string,
+    municipalityName?: string,
+    status: string,
+    details: DistributeDtlI[],
+    dtCreated?: string,
+    dtModified?:string,
+    dtSubmitted?:string,
+    statusName?:string,
+    dtReceived?:string
+}
+
+export interface MDistributeDtlI{
+    seedId: number | string,
+    qtyRemaining: number,
+    uom: string,
+    qtyDistributed: number,
+    remarks: string,
+    seedName?:string,
+    farmerId: any,
+    farmerName?: string
+}
+

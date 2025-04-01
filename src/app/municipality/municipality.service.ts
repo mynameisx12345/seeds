@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, tap } from 'rxjs';
-import { FarmerI } from '../shared/models/shared-models';
+import { FarmerI, MDistributeHdrI } from '../shared/models/shared-models';
 
 @Injectable({
   providedIn: 'root'
@@ -38,4 +38,15 @@ export class MunicipalityService {
       })
     )
   }
+
+  distribute(distributeData: MDistributeHdrI){
+    return this.http.post(`${this.apiUrl}/municipality/distribute`, distributeData);
+  }
+
+  getDistribution(id?:any){
+    const idStatement = !!id ? `/${id}` : ''
+    return this.http.get(`${this.apiUrl}/municipality/distribute${idStatement}`)
+  }
+
+  
 }

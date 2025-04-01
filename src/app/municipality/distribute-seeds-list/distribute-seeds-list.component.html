@@ -1,1 +1,46 @@
-<p>distribute-seeds-list works!</p>
+<div class="flex flex-col">
+    <div class="flex flex-row justify-between items-center">
+        <button mat-raised-button color="accent" (click)="startDistribution()">New Distribution</button>
+        <mat-form-field>
+            <mat-label>Filter</mat-label>
+            <input matInput (keyup)="applyFilter($event)" #input>
+          </mat-form-field>
+    </div>
+    
+    <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+        <ng-container matColumnDef="municipalityName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Municipality </th>
+            <td mat-cell *matCellDef="let element"> {{element.municipalityName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="statusName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+            <td mat-cell *matCellDef="let element"> {{element.statusName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="dtCreated">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Date Created </th>
+            <td mat-cell *matCellDef="let element"> {{element.dtCreated}} </td>
+        </ng-container>
+        <ng-container matColumnDef="dtModified">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Date Modified </th>
+            <td mat-cell *matCellDef="let element"> {{element.dtModified}} </td>
+        </ng-container>
+        <ng-container matColumnDef="dtSubmitted">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Date Submitted </th>
+            <td mat-cell *matCellDef="let element"> {{element.dtSubmitted}} </td>
+        </ng-container>
+        <ng-container matColumnDef="menu">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-button color="primary" (click)="startDistribution(element.id)">View</button>
+            </td>
+        </ng-container>
+     
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of items"></mat-paginator>
+</div>

@@ -64,11 +64,22 @@
         </table>
         <div class="flex flex-row items-center justify-center w-full mt-5 gap-x-5">
             <button mat-raised-button color="accent" [disabled]="distributeForm.invalid || seedsDistributed.length === 0 || distributeForm.value.status === 'S' ||  (quantityChecker$  | async)"
-              
+              (click)="confirmSaving('N')"
             >SAVE</button>
             <button mat-raised-button color="warn" [disabled]="distributeForm.invalid || seedsDistributed.length === 0 || distributeId=== null || distributeForm.value.status === 'S'"
-
+                (click)="saveStart()"
             >SUBMIT</button>
         </div>
     </div>
 </div>
+
+<ng-template #confirm>
+    <app-modal 
+        [title]="'Confirm Distribution'" 
+        [content]="'Submitting will reduce the remaining quantity.'"
+        (onYes)="confirmSaving('S')"
+        (onNo)="cancelSaving()"
+        >
+    </app-modal>
+
+</ng-template>
