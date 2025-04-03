@@ -15,6 +15,9 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatDividerModule} from '@angular/material/divider';
+
 @NgModule({
   declarations: [],
   imports: [
@@ -36,7 +39,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatPaginatorModule,
     MatSortModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatTooltipModule,
+    MatDividerModule
   ]
 })
 export class SharedModulesModule { }

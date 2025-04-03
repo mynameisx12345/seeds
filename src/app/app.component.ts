@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { SharedServiceService } from './shared/shared-services/shared-service.service';
 import { UserService } from './user/user.service';
+import { filter, map } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -11,13 +12,32 @@ import { UserService } from './user/user.service';
 export class AppComponent implements OnInit{
   constructor(
     private readonly sharedServices: SharedServiceService,
-    private readonly userService:UserService
+    private readonly userService:UserService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router
   ){
 
   }
   title = 'seed-dist-ui';
+
+  view$ = this.router.events.pipe(
+    filter((event)=>event instanceof NavigationEnd),
+    map((event:any)=>{
+      let viewHdr = false;
+
+      if(event.url !== '/' && event.url !== '/user/login'){
+        viewHdr = true;
+      }
+     
+      return viewHdr;
+    })
+  );
   ngOnInit(): void {
     this.sharedServices.setTitle('Office of Provincial Agricultural Distribution Monitoring System');
     this.userService.loadCurrentUser();
+
+    console.log('routerurl', this.router.url)
+
+    
   }
 }

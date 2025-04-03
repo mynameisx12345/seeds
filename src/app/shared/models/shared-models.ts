@@ -1,7 +1,9 @@
 export interface MenuLinksI {
     label:string,
     link: string,
-    subLinks: any[]
+    subLinks: any[],
+    hasNotif: boolean,
+    icon?: string
 }
 
 export interface UserI {

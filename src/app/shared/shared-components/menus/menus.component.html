@@ -1,15 +1,22 @@
-<div>
-    <div class="flex" [ngClass]="isDesktop ? 'flex-col gap-y-1' : 'flex-row'">
-        <button mat-flat-button   *ngFor="let link of links" (click)="link.subLinks.length > 0 ? menuTrigger.openMenu(): goToLink(link.link)">
-            {{link.label}}
-            <div #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu"></div>
-            <mat-menu #menu="matMenu" xPosition="before">
-                <button mat-menu-item *ngFor="let subLink of link.subLinks" (click)="goToLink(subLink.link)">
-                  <span>{{subLink.label}}</span>
+
+    <div class="w-full flex flex-row items-start justify-between">
+        <div class="title">{{title$  | async}}</div>
+        <div class="flex flex-row">
+            <div class="container"  *ngFor="let link of links" >
+                <div class="notif" *ngIf="link.hasNotif"></div>
+                <button mat-flat-button  (click)="link.subLinks.length > 0 ? menuTrigger.openMenu(): goToLink(link.link)">
+               <mat-icon>{{link?.icon}}</mat-icon>{{link.label}}
+                    <div #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu"></div>
+                    <mat-menu #menu="matMenu" xPosition="before">
+                        <button mat-menu-item *ngFor="let subLink of link.subLinks" (click)="goToLink(subLink)">
+                          <span>{{subLink.label}}</span>
+                        </button>
+                    </mat-menu>
                 </button>
-            </mat-menu>
-        </button>
+            </div>
+        </div>
+       
+      
     </div>
 
   
-</div>

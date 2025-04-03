@@ -1,15 +1,33 @@
-<div class="login flex flex-col items-center justify-center"   
-    [formGroup]="fgLogin">
-    <div>
-        <mat-form-field appearance="outline">
-            <mat-label>Username</mat-label>
-            <input matInput formControlName="username">
-        </mat-form-field>
+<div class="login flex flex-row items-center justify-start w-full"   
+    >
+    <div class="login-image">
+        <!-- <img src="b1.jpg" height="100%"> -->
     </div>
+    <div class="login-box flex flex-col items-start justify-between w-full" [formGroup]="fgLogin">
+        <div class="w-full flex flex-col items-center justify-center box">
+            <div class="title flex flex-col gap-y-4 items-center justify-center">
+            
+                <img src="logo2.png" height="150px" width="150px">
+                <span>{{title$ |async}}</span>
+            </div>
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Username</mat-label>
+                <input matInput formControlName="username">
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" formControlName="password">
+            </mat-form-field>
+            <button mat-raised-button color="accent" [disabled]="fgLogin.invalid" (click)="login()">Login</button>
+        </div>
+
+        <div class="devs flex flex-col items-center justify-center">
+        
+            Developed and Mananged by following students of University of Antique - Tibiao Campus
+            {{devs.join(',')}}
+        </div>
+    </div>
+ 
    
-    <mat-form-field appearance="outline">
-        <mat-label>Password</mat-label>
-        <input matInput type="password" formControlName="password">
-    </mat-form-field>
-    <button mat-raised-button color="accent" [disabled]="fgLogin.invalid" (click)="login()">Login</button>
+
 </div>

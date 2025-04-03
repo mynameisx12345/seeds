@@ -74,6 +74,7 @@ export class DistributeSeedsComponent implements OnInit, AfterViewInit{
   }
 
   ngAfterViewInit(): void {
+    this.provinceService.getSeeds();
    
     setTimeout(()=>{
       this.route.queryParams.pipe(

@@ -48,7 +48,8 @@ export class ProvinceService {
             return {
               warehouseType: rem.warehouse_type,
               municipalityId: rem.municipality_id,
-              qtyRemaining: parseFloat(rem.qty_remaining)
+              qtyRemaining: parseFloat(rem.qty_remaining),
+              municipalityName: rem.municipality_name
             }
           })
         }
@@ -90,5 +91,9 @@ export class ProvinceService {
 
   addSeed(param:any){
     return this.http.post(`${this.apiUrl}/province/seeds`,param)
+  }
+
+  deleteSeed(id:any){
+    return this.http.delete(`${this.apiUrl}/province/seeds/${id}`)
   }
 }

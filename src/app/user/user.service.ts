@@ -5,6 +5,7 @@ import { ProvinceService } from '../province/province.service';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { MunicipalityService } from '../municipality/municipality.service';
+import { SharedServiceService } from '../shared/shared-services/shared-service.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class UserService {
   constructor(
     private readonly provinceService: ProvinceService,
     private readonly http: HttpClient,
-    private readonly municipalityService: MunicipalityService
+    private readonly municipalityService: MunicipalityService,
+    private readonly sharedService: SharedServiceService
   ) { }
 
   setCurrentUser(user: UserI | null){
@@ -74,7 +76,7 @@ export class UserService {
   logout(){
     this.currentUser.next(null);
     localStorage.removeItem('user');
-
+    this.sharedService.setPageTitle('')
     this.clearLovs();
   }
 }

@@ -1,0 +1,67 @@
+<div class="w-full flex flex-col">
+    <div class="flex flex-row justify-between items-center" [formGroup]="range">
+        <mat-form-field>
+            <mat-label>Select Municipality</mat-label>
+            <mat-select formControlName="municipality">
+                <!-- <mat-option [value]="-1">All</mat-option> -->
+                <mat-option *ngFor="let municipality of municipalities$ | async" [value]="municipality.id">{{municipality.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Filter</mat-label>
+            <input matInput (keyup)="applyFilter($event)" #input>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Date Submitted</mat-label>
+            <mat-date-range-input  [rangePicker]="picker">
+              <input matStartDate formControlName="start" placeholder="Start date">
+              <input matEndDate formControlName="end" placeholder="End date">
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          
+            @if (range.controls.start.hasError('matStartDateInvalid')) {
+              <mat-error>Invalid start date</mat-error>
+            }
+            @if (range.controls.end.hasError('matEndDateInvalid')) {
+              <mat-error>Invalid end date</mat-error>
+            }
+          </mat-form-field>
+    </div>
+    <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="farmersName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Farmer</th>
+            <td mat-cell *matCellDef="let element"> {{element.farmersName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="seedName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Seed </th>
+            <td mat-cell *matCellDef="let element"> {{element.seedName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="qtyDistributed">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Qty. Distributed </th>
+            <td mat-cell *matCellDef="let element"> {{element.qtyDistributed}} </td>
+        </ng-container>
+        <ng-container matColumnDef="uom">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Unit of Measure </th>
+            <td mat-cell *matCellDef="let element"> {{element.uom}} </td>
+        </ng-container>
+        <ng-container matColumnDef="remarks">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Remarks </th>
+            <td mat-cell *matCellDef="let element"> {{element.remarks}} </td>
+        </ng-container>
+        <ng-container matColumnDef="dtSubmitted">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Date Submitted </th>
+            <td mat-cell *matCellDef="let element"> {{element.dtSubmitted}} </td>
+        </ng-container>
+        <ng-container matColumnDef="municipalityName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Municipality </th>
+            <td mat-cell *matCellDef="let element"> {{element.municipalityName}} </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of items"></mat-paginator>
+
+</div>

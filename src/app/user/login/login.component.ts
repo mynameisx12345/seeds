@@ -5,6 +5,7 @@ import {USERS} from '../../shared/constants/shared-constant';
 import { UserService } from '../user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { take, tap } from 'rxjs';
+import { SharedServiceService } from '../../shared/shared-services/shared-service.service';
 
 @Component({
   selector: 'app-login',
@@ -13,15 +14,26 @@ import { take, tap } from 'rxjs';
 })
 export class LoginComponent {
 
+  devs = [
+    'Juan Dela Cruz',
+    'Juan Dela Cruz',
+    'Juan Dela Cruz',
+    'Juan Dela Cruz',
+    'Juan Dela Cruz',
+  ]
+
   fgLogin = this.fb.group({
     username:['', Validators.required],
     password: ['', Validators.required]
   })
+
+  title$ = this.sharedService.title$;
   constructor(
     private readonly fb: FormBuilder,
     private readonly router: Router,
     private readonly userService: UserService,
-    private readonly snackbar: MatSnackBar
+    private readonly snackbar: MatSnackBar,
+    private readonly sharedService: SharedServiceService,
   ){}
 
   login(){

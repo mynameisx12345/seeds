@@ -10,12 +10,18 @@ import { DistributeSeedsComponent } from './distribute-seeds/distribute-seeds.co
 import { ReceiveSeedsListComponent } from './receive-seeds-list/receive-seeds-list.component';
 import { DistributeSeedsListComponent } from './distribute-seeds-list/distribute-seeds-list.component';
 import { InventoryReportComponent } from '../shared/shared-components/inventory-report/inventory-report.component';
+import { MunicipalityDistributionReportComponent } from '../shared/shared-components/municipality-distribution-report/municipality-distribution-report.component';
+import { WelcomeComponent } from '../shared/shared-components/welcome/welcome.component';
 
 const routes: Routes = [
   {
     path: 'menu',
     component: MunicipalityMenuComponent,
     children: [
+      {
+        path:'',
+        component: WelcomeComponent
+      },
       {
         path:'manage-farmers',
         component: ManageFarmersComponent
@@ -39,6 +45,10 @@ const routes: Routes = [
       {
         path: 'inventory-report',
         component: InventoryReportComponent
+      },
+      {
+        path: 'distribution-report-farmer',
+        component: MunicipalityDistributionReportComponent
       }
     ]
   },

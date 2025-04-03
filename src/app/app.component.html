@@ -1,11 +1,11 @@
 <div class="app flex flex-col items-center justfiy-start">
-  <div class="w-full">
+  <div class="w-full" *ngIf="view$ | async">
     <app-header></app-header>
   </div>
   <div class="content w-4/4 flex flex-col items-center justify-center">
     <router-outlet></router-outlet>
   </div>
-  <div class="w-full">
+  <div class="w-full" *ngIf="view$ | async">
     <app-footer></app-footer>
   </div>
   </div>

@@ -42,7 +42,6 @@ export class ProvinceDistributionReportComponent implements OnInit{
         return (!!(range as any).start ? moment(dist.dtSubmitted).format() >= moment((range as any).start).format() : true ) && 
           (!!(range as any).end ? moment(dist.dtSubmitted).format() <= moment((range as any).end).format() : true)
       })
-      console.log('dis', range, distributions,parsed);
       this.dataSource.data = parsed as any;
       this.dataSource.paginator = this.paginator as MatPaginator;
       this.dataSource.sort = this.sort as MatSort;

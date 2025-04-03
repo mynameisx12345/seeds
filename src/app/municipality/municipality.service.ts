@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, map, tap } from 'rxjs';
 import { FarmerI, MDistributeHdrI } from '../shared/models/shared-models';
+import moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -48,5 +49,25 @@ export class MunicipalityService {
     return this.http.get(`${this.apiUrl}/municipality/distribute${idStatement}`)
   }
 
+  addFarmer(body:any){
+    return this.http.post(`${this.apiUrl}/municipality/farmers`,body)
+  }
+
+  deleteFarmer(id:any){
+    return this.http.delete(`${this.apiUrl}/municipality/farmers/${id}`)
+  }
+
+  getDistributionByFarmer(){
+    return this.http.get(`${this.apiUrl}/municipality/distribute-by-farmer`).pipe(
+      map((distributions:any)=>{
+        return distributions.map((dist:any)=>{
+          return {
+            ...dist,
+            dtSubmitted: moment(dist.dtSubmitted).format('MMMM DD, YYYY')
+          }
+        })
+      })
+    )
+  }
   
 }
