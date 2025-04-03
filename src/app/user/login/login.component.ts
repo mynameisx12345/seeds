@@ -15,11 +15,10 @@ import { SharedServiceService } from '../../shared/shared-services/shared-servic
 export class LoginComponent {
 
   devs = [
-    'Juan Dela Cruz',
-    'Juan Dela Cruz',
-    'Juan Dela Cruz',
-    'Juan Dela Cruz',
-    'Juan Dela Cruz',
+    'PRINCE KYLE  MANALO',
+    'ADRIAN TAMBA',
+    'JOHN LOREN MODESTO',
+    'ANTHON JOHN NECOR'
   ]
 
   fgLogin = this.fb.group({
