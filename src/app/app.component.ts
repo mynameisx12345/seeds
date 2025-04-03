@@ -33,7 +33,7 @@ export class AppComponent implements OnInit{
     })
   );
   ngOnInit(): void {
-    this.sharedServices.setTitle('Office of Provincial Agricultural Distribution Monitoring System');
+    this.sharedServices.setTitle('Office of Provincial Agricultural Seeds Distribution Monitoring System');
     this.userService.loadCurrentUser();
 
     console.log('routerurl', this.router.url)
